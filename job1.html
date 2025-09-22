@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRY个人页面</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            /* 淡绿色渐变背景 */
+            background: linear-gradient(135deg, #d4f7d4 0%, #a8e6a8 100%);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 背景装饰元素容器 */
+        .background-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* 左侧导航栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 160px;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 30px 0;
+            font-size: 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            color: #4CAF50;
+            transform: scale(1.1);
+        }
+        
+        /* 内容区域 */
+        .content {
+            margin-left: 160px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 5; /* 确保内容在背景之上 */
+        }
+        
+        /* 欢迎页面 */
+        #welcome {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        #welcome .chinese {
+            font-family: "STXingkai", "行楷", serif;
+            font-size: 110px;
+            margin: 15px 0;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #welcome .english {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            font-size: 80px;
+            color: #555;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 自我介绍页面 */
+        #intro {
+            font-family: "SimSun", "宋体", serif;
+            font-size: 30px;
+            width: 850px;
+            line-height: 2.2;
+            color: #333;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 60px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Logo样式 - 左上角 */
+        .logo {
+            position: fixed;
+            top: 30px;
+            left: 200px; /* 导航栏右侧 */
+            font-size: 90px;
+            font-style: italic;
+            color: #333;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        /* 光效穿过效果 */
+        .light-beam {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(-30deg);
+            animation: lightMove 25s infinite linear;
+            z-index: 1;
+        }
+        
+        /* 波纹效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            pointer-events: none;
+            animation: rippleEffect 2s linear forwards;
+            z-index: 4;
+        }
+        
+        /* 气泡样式 */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* 蝴蝶样式 */
+        .butterfly {
+            position: absolute;
+            pointer-events: none;
+            z-index: 3;
+            width: 40px;
+            height: 30px;
+        }
+        
+        /* 动画定义 */
+        @keyframes lightMove {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        @keyframes rippleEffect {
+            to {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes floatBubble {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyButterfly {
+            0% {
+                transform: translate(0, 100vh) rotate(0deg);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translate(150px, 70vh) rotate(10deg);
+            }
+            50% {
+                transform: translate(50px, 40vh) rotate(-10deg);
+            }
+            75% {
+                transform: translate(200px, 20vh) rotate(5deg);
+            }
+            100% {
+                transform: translate(100px, -100px) rotate(0deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰容器 -->
+    <div class="background-decoration"></div>
+    
+    <!-- Logo 左上角 -->
+    <div class="logo">SRY</div>
+    
+    <!-- 左侧导航 -->
+    <div class="sidebar">
+        <a href="#welcome"><i class="fas fa-home"></i> 欢迎页面</a>
+        <a href="#intro"><i class="fas fa-user"></i> 自我介绍</a>
+    </div>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <!-- 欢迎页面 -->
+        <div id="welcome">
+            <div class="chinese">欢迎来到</div>
+            <div class="english">welcome to</div>
+            <div class="chinese">SRY.com</div>
+        </div>
+        
+        <!-- 自我介绍页面 -->
+        <div id="intro">
+            来自山东济宁，就读于sdnu计算机科学与技术（非师范）专业。<br><br>
+            大一在校青媒、院学生组织以及图志协任职，曾参加蓝桥杯和校三创竞赛。<br><br>
+            爱好打游戏、绘画、看小说、读书等
+        </div>
+    </div>
+    
+    <!-- 光效穿过效果 -->
+    <div class="light-beam"></div>
+    
+    <script>
+        // 页面切换功能
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                
+                // 隐藏所有内容
+                document.querySelectorAll('.content > div').forEach(div => {
+                    div.style.display = 'none';
+                });
+                
+                // 显示目标内容
+                document.getElementById(targetId).style.display = targetId === 'welcome' ? 'flex' : 'block';
+            });
+        });
+        
+        // 背景点击波纹效果 - 三圈从小到大
+        document.body.addEventListener('click', function(e) {
+            // 创建三个同心圆波纹，从小到大
+            for (let i = 0; i < 3; i++) {
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                
+                // 大小递增
+                const size = 80 + (i * 60);
+                ripple.style.width = `${size}px`;
+                ripple.style.height = `${size}px`;
+                
+                // 定位到点击位置
+                ripple.style.left = `${e.clientX - size/2}px`;
+                ripple.style.top = `${e.clientY - size/2}px`;
+                
+                // 不同透明度，内层更明显
+                ripple.style.background = `rgba(255, 255, 255, ${0.4 - i*0.1})`;
+                
+                // 错开动画时间，形成依次扩散效果
+                ripple.style.animationDelay = `${i * 0.2}s`;
+                
+                document.body.appendChild(ripple);
+                
+                // 动画结束后移除元素
+                setTimeout(() => {
+                    ripple.remove();
+                }, 2000);
+            }
+        });
+        
+        // 模拟背景点击波纹（简单示意，效果较基础）
+        document.body.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.style.position = 'absolute';
+            ripple.style.width = '100px';
+            ripple.style.height = '100px';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+            ripple.style.left = e.clientX - 50 + 'px';
+            ripple.style.top = e.clientY - 50 + 'px';
+            ripple.style.pointerEvents = 'none';
+            document.body.appendChild(ripple);
+            setTimeout(() => {
+                ripple.style.transform = 'scale(2)';
+                ripple.style.opacity = '0';
+                ripple.style.transition = 'transform 1s, opacity 1s';
+                setTimeout(() => {
+                    document.body.removeChild(ripple);
+                }, 1000);
+            }, 10);
+        });
+        // 模拟气泡（简单循环生成）
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.style.position = 'absolute';
+            bubble.style.width = Math.random() * 50 + 10 + 'px';
+            bubble.style.height = bubble.style.width;
+            bubble.style.borderRadius = '50%';
+            bubble.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.4)`;
+            bubble.style.left = Math.random() * window.innerWidth + 'px';
+            bubble.style.top = window.innerHeight + 'px';
+            bubble.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
+            document.body.appendChild(bubble);
+            setTimeout(() => {
+                bubble.remove();
+            }, 15000);
+        }
+        setInterval(createBubble, 1000);
+        // 模拟蝴蝶（简单循环生成）
+        function createButterfly() {
+            const butterfly = document.createElement('div');
+            butterfly.style.position = 'absolute';
+            butterfly.style.width = '30px';
+            butterfly.style.height = '30px';
+            butterfly.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`;
+            butterfly.style.left = Math.random() * window.innerWidth + 'px';
+            butterfly.style.top = window.innerHeight + 'px';
+            butterfly.style.animation = `fly ${Math.random() * 15 + 10}s linear infinite`;
+            document.body.appendChild(butterfly);
+            setTimeout(() => {
+                butterfly.remove();
+            }, 25000);
+        }
+        setInterval(createButterfly, 2000);
+        // 定义动画关键帧（因纯 HTML 内联 CSS 写关键帧有限制，这里用 style 标签补充，实际更规范的是写在 head 的 style 里，这里为了贴近“仅用 HTML 相关”，稍作处理）
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.4;
+                }
+                100% {
+                    transform: translateY(-1000px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes fly {
+                0% {
+                    transform: translateY(0) translateX(0) rotate(0deg);
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: translateY(-1000px) translateX(${Math.random() * 500 - 250}px) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
+    
